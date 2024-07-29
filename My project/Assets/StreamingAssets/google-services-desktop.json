@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "573934032832",
+    "project_id": "naturecoin-d5c74",
+    "storage_bucket": "naturecoin-d5c74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573934032832:android:8276c8e42c0a8b2480da25",
+        "android_client_info": {
+          "package_name": "com.natureCrypto.natureCoin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmXRagDU5iXmlxZywQMuvtQatPxt1NkOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
