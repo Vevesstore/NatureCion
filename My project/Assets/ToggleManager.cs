@@ -9,7 +9,6 @@ using UnityEngine.UIElements;
 
 public class ToggleManager : MonoBehaviour
 {
-    [SerializeField] private UnityEngine.UI.Button button;
     [SerializeField] private TextMeshProUGUI _holdingText;
     [SerializeField] private int _incomeMultiplicator;
 
