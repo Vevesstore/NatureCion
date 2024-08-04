@@ -10,12 +10,13 @@ public class MoneyManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _moneyText;
 
     private int _moneyCount;
+    
 
     private void Start()
     {
         SetMoneyManager();
         DowloandSavedMoneyCount();
-        SetMoneyText();
+        SetMoneyText();        
     }
     private void SetMoneyManager()
     {
@@ -34,5 +35,5 @@ public class MoneyManager : MonoBehaviour
     private void SetMoneyText()
     {
         _moneyText.text = _moneyCount.ToString();
-    }
+    }    
 }
