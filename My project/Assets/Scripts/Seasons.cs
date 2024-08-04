@@ -1,18 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using System.Linq;
-
-/* Пори року тривають:
-
-Зима - 90 днів
-Весна - 92 дні
-Літо - 92 дні
-Осінь - 91 день
-
-*/
 
 public class Seasons : MonoBehaviour
 {
@@ -20,7 +10,6 @@ public class Seasons : MonoBehaviour
     [SerializeField] private Image seasonIcon;
     [SerializeField] private List<SeasonsTypes> seasons;
 
-    // Серіалізовано чисто для показу в інспекторі
     [SerializeField, Range(0, 365)] private int time;
 
     [Serializable]
@@ -36,8 +25,12 @@ public class Seasons : MonoBehaviour
     private string currentSeason;
     private Dictionary<int, string> seasonMapping;
 
+    private const string LastSaveKey = "LastSaveTime";
+    private DateTime lastSaveTime;
+
     void Start()
     {
+        // Initialize the season mapping
         seasonMapping = new Dictionary<int, string>
         {
             { 0, "winter" },
@@ -45,23 +38,36 @@ public class Seasons : MonoBehaviour
             { 152, "summer" },
             { 274, "autumn" }
         };
+
+        // Load the last saved time
+        LoadTime();
+
+        // Calculate the elapsed time
+        UpdateElapsedTime();
+
+        // Update the season based on the current time
+        UpdateSeason(time);
     }
 
     void FixedUpdate()
     {
-        UpdateSeason(time);
-
         second += Time.deltaTime;
 
         if (second > 1)
         {
             time++;
             second = 0;
-        }
 
-        if (time == 365)
-        {
-            time = 0;
+            if (time >= 365)
+            {
+                time = 0;
+            }
+
+            // Update the season if necessary
+            UpdateSeason(time);
+
+            // Save the current time
+            SaveTime();
         }
     }
 
@@ -80,5 +86,30 @@ public class Seasons : MonoBehaviour
             seasonIcon.sprite = s.icon;
             bg.color = s.bgColor;
         }
+    }
+
+    void SaveTime()
+    {
+        PlayerPrefs.SetInt("Time", time);
+        PlayerPrefs.SetString(LastSaveKey, DateTime.UtcNow.ToString("o")); // Save current time as ISO 8601
+        PlayerPrefs.Save();
+    }
+
+    void LoadTime()
+    {
+        time = PlayerPrefs.GetInt("Time");
+        string lastSaveTimeStr = PlayerPrefs.GetString(LastSaveKey, DateTime.UtcNow.ToString("o"));
+        lastSaveTime = DateTime.Parse(lastSaveTimeStr, null, System.Globalization.DateTimeStyles.RoundtripKind);
+    }
+
+    void UpdateElapsedTime()
+    {
+        DateTime now = DateTime.UtcNow;
+        TimeSpan elapsed = now - lastSaveTime;
+        int elapsedDays = (int)elapsed.TotalSeconds;
+
+        time = (time + elapsedDays) % 365;
+
+        lastSaveTime = now;
     }
 }
